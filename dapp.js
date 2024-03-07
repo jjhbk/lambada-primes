@@ -152,7 +152,7 @@ const writeFileIpfs = async (path, data) => {
     );
     await finishTx();
   } catch (e) {
-    console.log(err);
+    console.log(e);
     process.exit(1);
   }
 })();
