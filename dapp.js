@@ -8,6 +8,7 @@ const ipfs = create({ url: apiUrl });
 let counter = 1;
 let primesList = [];
 const statePath = "/state";
+const outputPath = "/output";
 const getPrimes = (lower, higher) => {
   let primes = [];
   console.log(lower, higher);
@@ -135,11 +136,18 @@ const writeFileIpfs = async (path, data) => {
 // Execute the functions
 (async () => {
   try {
-    if (!(await existFileIpfs(`${statePath}`))) {
-      await ipfs.files.mkdir(`${statePath}`);
+    if (!(await existFileIpfs(`${outputPath}`))) {
+      await ipfs.files.mkdir(`${outputPath}`);
     }
     const txresponse = await getTx();
     console.log("tx is: " + txresponse);
+    if (txresponse.lower === undefined || txresponse.higher === undefined) {
+      console.log(
+        new Error(
+          "invalid input: it must be of the format {lower:<integer>,higher:<integer>}"
+        )
+      );
+    }
     const primes = getPrimes(
       parseInt(txresponse.lower),
       parseInt(txresponse.higher)
@@ -147,7 +155,7 @@ const writeFileIpfs = async (path, data) => {
 
     console.log(primes);
     await writeFileIpfs(
-      `${statePath}/primes.json`,
+      `${outputPath}/primes.json`,
       JSON.stringify({ primes: primes })
     );
     await finishTx();
