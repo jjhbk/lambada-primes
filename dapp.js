@@ -8,7 +8,7 @@ const ipfs = create({ url: apiUrl });
 let counter = 1;
 let primesList = [];
 const statePath = "/state";
-const outputPath = "/output";
+const outputPath = "/state/output";
 const getPrimes = (lower, higher) => {
   let primes = [];
   console.log(lower, higher);
