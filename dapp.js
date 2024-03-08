@@ -136,6 +136,9 @@ const writeFileIpfs = async (path, data) => {
 // Execute the functions
 (async () => {
   try {
+    if (!(await existFileIpfs(`${statePath}`))) {
+      await ipfs.files.mkdir(`${statePath}`);
+    }
     if (!(await existFileIpfs(`${outputPath}`))) {
       await ipfs.files.mkdir(`${outputPath}`);
     }
