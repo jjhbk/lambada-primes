@@ -8,7 +8,6 @@ const ipfs = create({ url: apiUrl });
 let counter = 1;
 let primesList = [];
 const statePath = "/state";
-const outputPath = "/state/output";
 const getPrimes = (lower, higher) => {
   let primes = [];
   console.log(lower, higher);
@@ -139,9 +138,7 @@ const writeFileIpfs = async (path, data) => {
     if (!(await existFileIpfs(`${statePath}`))) {
       await ipfs.files.mkdir(`${statePath}`);
     }
-    if (!(await existFileIpfs(`${outputPath}`))) {
-      await ipfs.files.mkdir(`${outputPath}`, { parents: true });
-    }
+
     const txresponse = await getTx();
     console.log("tx is: " + txresponse);
     if (txresponse.lower === undefined || txresponse.higher === undefined) {
@@ -158,7 +155,7 @@ const writeFileIpfs = async (path, data) => {
 
     console.log(primes);
     await writeFileIpfs(
-      `${outputPath}/primes.json`,
+      `${statePath}/primes.json`,
       JSON.stringify({ primes: primes })
     );
     await finishTx();
