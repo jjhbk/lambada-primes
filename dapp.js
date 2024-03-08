@@ -140,7 +140,7 @@ const writeFileIpfs = async (path, data) => {
       await ipfs.files.mkdir(`${statePath}`);
     }
     if (!(await existFileIpfs(`${outputPath}`))) {
-      await ipfs.files.mkdir(`${outputPath}`);
+      await ipfs.files.mkdir(`${outputPath}`, { parents: true });
     }
     const txresponse = await getTx();
     console.log("tx is: " + txresponse);
